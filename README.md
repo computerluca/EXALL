@@ -1,4 +1,4 @@
-"# EXALL" 
+# EXALL
 Creiamo una piccola applicazione che prende in input un tipo e un comando ed esegue una certa operazione a seconda dell'input dell'utente.​
  Deve essere creato un file che contiene tutti i programmi eseguiti a seconda del programma aperti.txt. Indicare anche la data e l'ora dell'operazione (usare l'istruzione date)​
 es. aperto file, aperto firefox, rimosso file​

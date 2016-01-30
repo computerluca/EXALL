@@ -9,3 +9,7 @@ Alcuni controlli che devono essere effettuati sul file​
  Nel caso in cui fx il file deve essere .sh, altrimenti viene dato errore. Anche qui devono essere verificati i permessi di esecuzione​
  Verrà migliorato gradualmente via via che impareremo nuovi concetti​
 comandi multipli - migliore gestione degli errori
+
+Questo progetto è un esercizio per la serie di videotutorial presenti su youtube a questo link 
+https://www.youtube.com/playlist?list=PLaFv-3EpJqGCxSxqWGPYYZNaLEb6ZUfyw
+

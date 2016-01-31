@@ -29,11 +29,7 @@ function apri_background {
    
      
 }
-function kill_programma {
-     
-    echo 'kill'
-     
-}
+
 function apri_file {
         comando='file.tx'
         if [ -e $comando ]; then

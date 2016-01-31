@@ -35,8 +35,9 @@ function verifica_tipo  {
  continue
  fi
  if [[ $tipo == "q" ]]; then
- echo "Chiusura applicazione. Grazie per averla utilizzata"
+ echo "Chiusura applicazione. Grazie per averla utilizzata";
  break
+ fi
  done
 }
 function apri_background {

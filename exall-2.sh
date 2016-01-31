@@ -5,7 +5,12 @@ function crea_file {
  echo "Nuovo avvio $(date)" >> file.txt 
 }
 function verifica_tipo  {
-        tipo='fx'
+ read -p "Inserisci il tipo di comando da eseguire \n 
+ p per aprire un programma in background,
+ l per eseguire un comando libero,
+ fr per aprire un file,
+ fx per eseguire un file"
+ read tipo
  if [ -z $tipo ]; then
  echo Errore indica il tipo di comando da eseguire
  fi
@@ -23,7 +28,8 @@ function verifica_tipo  {
  fi
 }
 function apri_background {
- comando='nautilus';
+ read -p "Indica il programma da eseguire in background"
+ read comando
  bg = '&'
   echo "esecuzione comando apri in background programma:: $comando $bg" >>file.txt
     $(echo $comando $bg) 2>> file.txt;
@@ -32,7 +38,8 @@ function apri_background {
 }
 
 function apri_file {
-        comando='file.tx'
+        read -p "Indica il file da aprire. Deve essere un file .txt e devi avere i permessi di lettura"
+        read comando
         if [ -e $comando ]; then
         if [ -r $comando ]; then
             if [[ $comando == *.txt ]]; then
@@ -53,7 +60,9 @@ function apri_file {
 }
  
 function esegui_file {
-        comando='my.shs'
+        read -p "Indica il file da eseguire. Deve essere un file .sh e devi avere i permessi di esecuzione"
+        read comando 
+        
         if [ -e $comando ]; then
         if [ -x $comando ]; then
             if [[ $comando == *.sh ]]; then
@@ -72,7 +81,8 @@ function esegui_file {
          
 }
 function esegui_comando {
- comando=thunar
+ read -p "Inserisci il comando libero"
+ read comando
 if [ -n $comando ]; then
                 $(echo $comando);
                   echo "esecuzione comando libero:: $comando" >>file.txt

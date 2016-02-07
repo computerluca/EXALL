@@ -6,6 +6,7 @@ function crea_file {
  echo "Nuovo avvio $(date)" >> file.txt 
 }
 function verifica_tipo  {
+
   while true; do
   clear
  read -p "Inserisci il tipo di comando da eseguire \n 
@@ -18,27 +19,27 @@ function verifica_tipo  {
  if [ -z $tipo ]; then
  echo Errore indica il tipo di comando da eseguire
  fi
- if [[ $tipo == 'l' ]]; then
-  esegui_comando
-  continue
- fi
- if [[ $tipo == 'p' ]]; then
- apri_background
- continue
- fi
- if [[ $tipo == 'fr' ]]; then
- apri_file
- continue
- fi
- if [[ $tipo == 'fx' ]]; then
- esegui_file
- continue
- fi
- if [[ $tipo == "q" ]]; then
- echo "Chiusura applicazione. Grazie per averla utilizzata";
- break
- fi
- done
+  case tipo in
+    -l | --libero)
+        esegui_comando;;
+    -p | --programma )
+        apri_background ;;
+    -fr | --fileread)
+    apri_file;;
+    
+    -fx | --fileexecute)
+    esegui_file;;
+    
+    -q | --esci)
+     echo "Chiusura applicazione. Grazie per averla utilizzata";
+
+    break;;
+    *)
+    echo 'nessun comando trovato';;
+esac
+ 
+
+ 
 }
 function apri_background {
  read -p "Indica il programma da eseguire in background"

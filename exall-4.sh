@@ -6,8 +6,7 @@ function crea_file {
  echo "Nuovo avvio $(date)" >> file.txt 
 }
 function verifica_tipo  {
-NUM=1
-while (( "${NUM}" <= "$#" ))
+
  clear
  read -p "Inserisci il tipo di comando da eseguire \n 
  p per aprire un programma in background,
@@ -37,8 +36,7 @@ while (( "${NUM}" <= "$#" ))
     echo 'nessun comando trovato';;
     
 esac
-((NUM=${NUM}+1)) 
- done
+
 
  
 }
@@ -109,4 +107,10 @@ fi
  
 }
 crea_file
+
+NUM=1
+while (( "${NUM}" <= "$#" ))
+do
 verifica_tipo
+((NUM=${NUM}+1)) 
+ done

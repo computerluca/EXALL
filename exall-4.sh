@@ -5,13 +5,6 @@ function crea_file {
  touch file.txt
  echo "Nuovo avvio $(date)" >> file.txt 
 }
-function verifica_tipo  {
-
-
-
-
- 
-}
 function apri_background {
  read -p "Indica il programma da eseguire in background"
  read comando

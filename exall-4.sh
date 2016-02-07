@@ -7,35 +7,7 @@ function crea_file {
 }
 function verifica_tipo  {
 
- clear
- read -p "Inserisci il tipo di comando da eseguire \n 
- p per aprire un programma in background,
- l per eseguire un comando libero,
- fr per aprire un file,
- fx per eseguire un file,
- q per chiudere il programma"
- if [ -z ${NUM} ]; then
- echo Errore indica il tipo di comando da eseguire
- fi
-  case ${NUM} in
-    -l | --libero)
-        esegui_comando;;
-    -p | --programma )
-        apri_background ;;
-    -fr | --fileread)
-    apri_file;;
-    
-    -fx | --fileexecute)
-    esegui_file;;
-    
-    -q | --esci)
-     echo "Chiusura applicazione. Grazie per averla utilizzata";
 
-    break;;
-    *)
-    echo 'nessun comando trovato';;
-    
-esac
 
 
  
@@ -111,6 +83,34 @@ crea_file
 NUM=1
 while (( "${NUM}" <= "$#" ))
 do
-verifica_tipo
+ clear
+ read -p "Inserisci il tipo di comando da eseguire \n 
+ p per aprire un programma in background,
+ l per eseguire un comando libero,
+ fr per aprire un file,
+ fx per eseguire un file,
+ q per chiudere il programma"
+ if [ -z ${!NUM} ]; then
+ echo Errore indica il tipo di comando da eseguire
+ fi
+  case ${!NUM} in
+    -l | --libero)
+        esegui_comando;;
+    -p | --programma )
+        apri_background ;;
+    -fr | --fileread)
+    apri_file;;
+    
+    -fx | --fileexecute)
+    esegui_file;;
+    
+    -q | --esci)
+     echo "Chiusura applicazione. Grazie per averla utilizzata";
+
+    break;;
+    *)
+    echo 'nessun comando trovato';;
+    
+esac
 ((NUM=${NUM}+1)) 
  done

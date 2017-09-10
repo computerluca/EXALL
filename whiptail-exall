@@ -1,42 +1,36 @@
-
-
-#!/bin/bash
 function crea_file { 
  touch file.txt
  echo "Nuovo avvio $(date)" >> file.txt 
 }
 function apri_background {
- read -p "Indica il programma da eseguire in background"
- read comando
- bg = '&'
-  echo "esecuzione comando apri in background programma:: $comando $bg" >>file.txt
-    $(echo $comando $bg) 2>> file.txt;
-   
-     
+ variabile=$(whiptail --inputbox "Indica il programma da eseguire in background" 8 78 --title "Programma in Background" 3>&1 1>&2 2>&3)
+ exitstatus=$?
+ if [ $exitstatus = 0 ]; then
+  echo "esecuzione comando apri in background programma:: $variabile &" >>file.txt
+    $(echo $variabile &) 2>> file.txt;
+ fi
 }
-
 function apri_file {
-        read -p "Indica il file da aprire. Deve essere un file .txt e devi avere i permessi di lettura"
-        read comando
-        if [ -e $comando ]; then
-        if [ -r $comando ]; then
-            if [[ $comando == *.txt ]]; then
-            echo "apertura file $comando" >> file.txt
+		variabile=$(whiptail --inputbox "Indica il file da aprire. Deve essere un file .txt e devi avere i permessi di lettura" 8 78 --title "Apertura file" 3>&1 1>&2 2>&3)
+        if [ -e $variabile ]; then
+        if [ -r $variabile ]; then
+            if [[ $variabile == *.txt ]]; then
+            echo "apertura file $variabile" >> file.txt
             echo "Ecco il file";
-            cat $comando;
+			variabile=$(whiptail --textbox "$(cat $variabile)" --scrolltext 3>&1 1>&2 2>&3)
             else
-            echo "impossibile aprire il file $comando. Non è un file di testo" >> file.txt
+            			variabile=$(whiptail --title "Errore - Apertura File" --yesno "impossibile aprire il file $variabile. Non è un file di testo" 78 78 3>&1 1>&2 2>&3)
+
+            echo "impossibile aprire il file $variabile. Non è un file di testo" >> file.txt
             fi     
         else
-            echo "impossibile aprire il file $comando. Non hai i permessi di lettura" >> file.txt
+            echo "impossibile aprire il file $variabile. Non hai i permessi di lettura" >> file.txt
         fi
         else
-            echo "impossibile aprire il file $comando. Il file non esiste" >> file.txt
+            echo "impossibile aprire il file $variabile. Il file non esiste" >> file.txt
             fi
          
-         
 }
- 
 function esegui_file {
         read -p "Indica il file da eseguire. Deve essere un file .sh e devi avere i permessi di esecuzione"
         read comando 
@@ -59,51 +53,53 @@ function esegui_file {
          
 }
 function esegui_comando {
- read -p "Inserisci il comando libero"
- read comando
-if [ -n $comando ]; then
-                $(echo $comando);
-                  echo "esecuzione comando libero:: $comando" >>file.txt
- 
+	 variabile=$(whiptail --inputbox "Inserisci il comando libero" 8 78 --title "Comando liber" 3>&1 1>&2 2>&3)
+	 exitstatus=$?
+ if [ $exitstatus = 0 ]; then
+
+if [ -n $variabile ]; then
+                $(echo $variabile);
+                  echo "esecuzione comando libero:: $variabile" >>file.txt
 fi
- if [ -z $comando ]; then
-  echo Errore indica il comando da eseguire
+ if [ -z $variabile ]; then
+			variabile=$(whiptail --title "Errore - ComandoLibero"  --yesno " Errore indica il comando da eseguire" 8 8 3>&1 1>&2 2>&3)
+			esegui_comando
+
+ fi
  fi
  
 }
+function pagina_principale(){
+variabile=$(whiptail --title 'EXALL' --menu 'Inserisci il tipo di comando da eseguire' 25 78 16 \
+'Apri' 'per aprire un programma in background' \
+'Esegui' 'per aprire un programma in background' \
+'ApriFile' 'per aprire un file' \
+'EseguiFile' 'per eseguire un file' \
+ 3>&1 1>&2 2>&3)
+}
+
 crea_file
-
-NUM=1
-while (( "${NUM}" <= "$#" ))
+while true
 do
- clear
- read -p "Inserisci il tipo di comando da eseguire \n 
- p per aprire un programma in background,
- l per eseguire un comando libero,
- fr per aprire un file,
- fx per eseguire un file,
- q per chiudere il programma"
- if [ -z ${!NUM} ]; then
- echo Errore indica il tipo di comando da eseguire
- fi
-  case ${!NUM} in
-    -l | --libero)
-        esegui_comando;;
-    -p | --programma )
-        apri_background ;;
-    -fr | --fileread)
-    apri_file;;
-    
-    -fx | --fileexecute)
-    esegui_file;;
-    
-    -q | --esci)
-     echo "Chiusura applicazione. Grazie per averla utilizzata";
+pagina_principale
+exitstatus=$?
+if [ $exitstatus -eq 1 ]; then
+  break
+fi
+case $variabile in "Apri")   
+ apri_background
+;;
+"ApriFile")
+apri_file
+;;
+"Esegui")
+esegui_comando
+;;
+"EseguiFile")
+esegui_file
+;;
 
-    break;;
-    *)
-    echo 'nessun comando trovato';;
-    
 esac
-((NUM=${NUM}+1)) 
- done
+
+ 
+done

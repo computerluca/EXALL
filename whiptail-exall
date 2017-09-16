@@ -12,62 +12,81 @@ function apri_background {
 }
 function apri_file {
 		variabile=$(whiptail --inputbox "Indica il file da aprire. Deve essere un file .txt e devi avere i permessi di lettura" 8 78 --title "Apertura file" 3>&1 1>&2 2>&3)
+        exitstatus=$?
+         if [ $exitstatus = 0 ]; then
+
+        if [ -z $variabile ]; then
+						variabile=$(whiptail --title "Errore - Apertura File" --yesno "non hai inserito il nome file" 8 78 3>&1 1>&2 2>&3)
+		else
         if [ -e $variabile ]; then
         if [ -r $variabile ]; then
+			
             if [[ $variabile == *.txt ]]; then
             echo "apertura file $variabile" >> file.txt
             echo "Ecco il file";
-			variabile=$(whiptail --textbox "$(cat $variabile)" --scrolltext 3>&1 1>&2 2>&3)
+			variabile=$(whiptail --textbox $variabile --scrolltext 12 80 3>&1 1>&2 2>&3)
             else
-            			variabile=$(whiptail --title "Errore - Apertura File" --yesno "impossibile aprire il file $variabile. Non è un file di testo" 78 78 3>&1 1>&2 2>&3)
-
-            echo "impossibile aprire il file $variabile. Non è un file di testo" >> file.txt
+				variabile=$(whiptail --title "Errore - Apertura File" --yesno "impossibile aprire il file $variabile. Non è un file di testo" 8 78 3>&1 1>&2 2>&3)
+				echo "impossibile aprire il file $variabile. Non è un file di testo" >> file.txt
             fi     
         else
+            variabile=$(whiptail --title "Errore - Apertura File" --yesno "impossibile aprire il file $variabile. Non hai i permessi di lettura" 8 78 3>&1 1>&2 2>&3)
             echo "impossibile aprire il file $variabile. Non hai i permessi di lettura" >> file.txt
-        fi
+		fi
         else
+			variabile=$(whiptail --title "Errore - Apertura File" --yesno "impossibile aprire il file $variabile. Il file non esiste" 8 78 3>&1 1>&2 2>&3)
             echo "impossibile aprire il file $variabile. Il file non esiste" >> file.txt
-            fi
-         
+        fi
+        fi
+        fi
 }
 function esegui_file {
-        read -p "Indica il file da eseguire. Deve essere un file .sh e devi avere i permessi di esecuzione"
-        read comando 
-        
-        if [ -e $comando ]; then
-        if [ -x $comando ]; then
-            if [[ $comando == *.sh ]]; then
-            echo "esecuzione file $comando" >> file.txt
+		variabile=$(whiptail --inputbox "Indica il file da eseguire. Deve essere un file .sh e devi avere i permessi di esecuzione" 8 78 --title "Esegui file" 3>&1 1>&2 2>&3)
+        exitstatus=$?
+         if [ $exitstatus = 0 ]; then
+         if [ -z $variabile ]; then
+			variabile=$(whiptail --title "Errore - Esegui File" --yesno "non hai inserito il nome file" 8 78 3>&1 1>&2 2>&3)
+          else
+        if [ -e $variabile ]; then
+        if [ -x $variabile ]; then
+            if [[ $variabile == *.sh ]]; then
+            echo "esecuzione file $variabile" >> file.txt
             echo "Ecco il file";
-            ./$comando;
+            ./$variabile;
             else
-            echo "impossibile aprire il file $comando. Non è un file eseguibile" >> file.txt
+            variabile=$(whiptail --title "Errore - Esegui File" --yesno "impossibile aprire il file $variabile. Il file non è eseguibile" 8 78 3>&1 1>&2 2>&3)
+
+            echo "impossibile aprire il file $variabile. Non è un file eseguibile" >> file.txt
             fi
         else
-            echo "impossibile aprire il file $comando. Non hai i permessi di esecuzione" >> file.txt
+            variabile=$(whiptail --title "Errore - Esegui File" --yesno "impossibile aprire il file $variabile. Non hai i permessi di esecuzione" 8 78 3>&1 1>&2 2>&3)
+
+            echo "impossibile aprire il file $variabile. Non hai i permessi di esecuzione" >> file.txt
             fi
             else
-            echo "impossibile aprire il file $comando. Il file non esiste" >> file.txt
+            variabile=$(whiptail --title "Errore - Esegui File" --yesno "impossibile aprire il file $variabile. Il file non esiste" 8 78 3>&1 1>&2 2>&3)
+
+            echo "impossibile aprire il file $variabile. Il file non esiste" >> file.txt
             fi
+        fi
+        fi
          
 }
 function esegui_comando {
 	 variabile=$(whiptail --inputbox "Inserisci il comando libero" 8 78 --title "Comando liber" 3>&1 1>&2 2>&3)
 	 exitstatus=$?
+	  if [ -z $variabile ]; then
+			variabile=$(whiptail --title "Errore - ComandoLibero"  --yesno " Errore indica il comando da eseguire" 8 8 3>&1 1>&2 2>&3)
+ else
  if [ $exitstatus = 0 ]; then
 
 if [ -n $variabile ]; then
                 $(echo $variabile);
                   echo "esecuzione comando libero:: $variabile" >>file.txt
 fi
- if [ -z $variabile ]; then
-			variabile=$(whiptail --title "Errore - ComandoLibero"  --yesno " Errore indica il comando da eseguire" 8 8 3>&1 1>&2 2>&3)
-			esegui_comando
 
  fi
  fi
- 
 }
 function pagina_principale(){
 variabile=$(whiptail --title 'EXALL' --menu 'Inserisci il tipo di comando da eseguire' 25 78 16 \
